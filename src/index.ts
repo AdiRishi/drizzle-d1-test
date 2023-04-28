@@ -47,7 +47,7 @@ app.get("/", async (c) => {
   await populateDB(db);
 
   // test joins
-  const customer = await db
+  const defaultJoin = await db
     .select()
     .from(customerTable)
     .innerJoin(addressTable, eq(addressTable.id, customerTable.addressId))
@@ -58,14 +58,27 @@ app.get("/", async (c) => {
   const directAddress = await db
     .select()
     .from(addressTable)
-    .where(eq(addressTable.id, customer.Customer.addressId))
+    .where(eq(addressTable.id, defaultJoin.Customer.addressId))
     .get();
+
+  const explicitSelect = await db
+    .select({
+      Customer: customerTable,
+      Address: addressTable,
+    })
+    .from(customerTable)
+    .innerJoin(addressTable, eq(addressTable.id, customerTable.addressId))
+    .where(eq(customerTable.email, "test@test.com"))
+    .get();
+
+  console.log(explicitSelect);
 
   return c.json(
     {
-      joinedCustomer: customer.Customer,
-      joinedAddress: customer.Address,
-      directAddress: directAddress,
+      joinedCustomer: defaultJoin.Customer,
+      joinedAddress: defaultJoin.Address,
+      directAddress,
+      explicitSelect,
     },
     200
   );

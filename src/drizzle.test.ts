@@ -24,7 +24,9 @@ describe("D1 DB test", () => {
     const json = (await res.json()) as any;
 
     expect(json.joinedCustomer.id).toBeTruthy();
-    expect(json.joinedAddress.id).toBeTruthy();
+    expect(json.joinedAddress.id).toBeNull(); // THIS IS THE BUG
+    expect(json.joinedAddress.city).toBe("AUS"); // WHY? THIS SHOULD BE IN countryAlpha3
+    expect(json.joinedAddress.countryAlpha3).toBeUndefined(); // BAD
     expect(json.directAddress.id).toBeTruthy();
   });
 });
