@@ -1,0 +1,15 @@
+name = "node-b7k8s4"
+main = "src/index.ts"
+compatibility_date = "2023-04-28"
+send_metrics = false
+
+[vars]
+ENVIRONMENT = 'production'
+HIGHLIGHT_PROJECT_ID = 'TESTING'
+
+[[ d1_databases ]]
+binding = "__D1_BETA__DB"
+database_name = "db"
+database_id = "ecd16c31-5953-494d-b171-41759313432d"
+migrations_table = "d1_migrations"
+migrations_dir = "d1_migrations"
