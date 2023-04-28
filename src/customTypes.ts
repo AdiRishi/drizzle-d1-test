@@ -1,10 +1,10 @@
-import { sql } from 'drizzle-orm';
-import { customType } from 'drizzle-orm/sqlite-core';
-import { DateTime } from 'luxon';
+import { sql } from "drizzle-orm";
+import { customType } from "drizzle-orm/sqlite-core";
+import { DateTime } from "luxon";
 
 export const dateTime = customType<{ data: DateTime; driverData: string }>({
   dataType() {
-    return 'text';
+    return "text";
   },
   toDriver(value: DateTime): string {
     if (value.isValid) {
@@ -17,11 +17,11 @@ export const dateTime = customType<{ data: DateTime; driverData: string }>({
   fromDriver(value: string): DateTime {
     // try both ISO and SQL for increased compatibility
     let result: DateTime;
-    result = DateTime.fromISO(value, { zone: 'UTC' });
+    result = DateTime.fromISO(value, { zone: "UTC" });
     if (result.isValid) {
       return result;
     }
-    result = DateTime.fromSQL(value, { zone: 'UTC' });
+    result = DateTime.fromSQL(value, { zone: "UTC" });
     if (result.isValid) {
       return result;
     }

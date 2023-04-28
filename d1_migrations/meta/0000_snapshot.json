@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "72406678-91dc-4b6a-9eb4-163e00914a1e",
+  "id": "3ebd7846-61dc-4b84-ae98-a0fdc05d6747",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Address": {
@@ -108,7 +108,7 @@
           "name": "addressId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },

@@ -5,7 +5,6 @@ send_metrics = false
 
 [vars]
 ENVIRONMENT = 'production'
-HIGHLIGHT_PROJECT_ID = 'TESTING'
 
 [[ d1_databases ]]
 binding = "__D1_BETA__DB"

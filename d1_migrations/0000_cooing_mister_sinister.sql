@@ -16,7 +16,7 @@ CREATE TABLE `Customer` (
 	`firstName` text NOT NULL,
 	`lastName` text NOT NULL,
 	`email` text NOT NULL,
-	`addressId` integer,
+	`addressId` integer NOT NULL,
 	FOREIGN KEY (`addressId`) REFERENCES `Address`(`id`) ON UPDATE cascade ON DELETE set null
 );
 --> statement-breakpoint
