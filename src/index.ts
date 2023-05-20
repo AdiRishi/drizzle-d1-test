@@ -2,19 +2,19 @@ import { Hono } from "hono";
 import { eq, inArray } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
-import { customerTable } from "./schema";
-import { addressTable } from "./schema";
+import { customerTable, addressTable } from "./schema";
+import * as schema from "./schema";
 
 export type Env = {
   __D1_BETA__DB: D1Database;
 };
 
-function getDrizzleClient(env: Env): DrizzleD1Database {
-  const db = drizzle(env.__D1_BETA__DB, { logger: true });
+function getDrizzleClient(env: Env): DrizzleD1Database<typeof schema> {
+  const db = drizzle(env.__D1_BETA__DB, { logger: true, schema });
   return db;
 }
 
-async function populateDB(db: DrizzleD1Database) {
+async function populateDB(db: DrizzleD1Database<typeof schema>) {
   let existingAddress = await db.select().from(addressTable).all();
   if (existingAddress.length === 0) {
     existingAddress.push(
@@ -42,7 +42,9 @@ async function populateDB(db: DrizzleD1Database) {
 
 export const app = new Hono<{ Bindings: Env }>();
 
-app.get("/", (c) => c.text("Visit one of the following endpoints - /join-test"));
+app.get("/", (c) =>
+  c.text("Visit one of the following endpoints - /join-test")
+);
 
 app.get("/join-test", async (c) => {
   const db = getDrizzleClient(c.env);
@@ -84,6 +86,17 @@ app.get("/join-test", async (c) => {
     },
     200
   );
+});
+
+app.get("/relation-test", async (c) => {
+  const db = getDrizzleClient(c.env);
+  await populateDB(db);
+
+  const customer = await db.query.customerTable.findFirst({
+    with: { address: true },
+    where: eq(customerTable.email, "test@test.com"),
+  });
+  return c.json(customer);
 });
 
 app.get("/ping", (c) => c.text("pong"));

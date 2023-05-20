@@ -31,4 +31,20 @@ describe("D1 DB test", () => {
     expect(json.joinedAddress.countryAlpha3).toBeUndefined(); // BAD
     expect(json.directAddress.id).toBeTruthy();
   });
+
+  it("should successfully execute the relation query", async () => {
+    const req = new Request("http://localhost/relation-test", {
+      method: "GET",
+    });
+    const res = await app.fetch(req, workerEnv, ctx);
+    expect(res.status).toBe(200);
+
+    const json = (await res.json()) as any;
+
+    expect(json.id).toBeTruthy();
+    expect(json.email).toBe("test@test.com");
+    expect(json.address).toBeTruthy();
+    expect(json.address.id).toBe(1);
+    expect(json.address.countryAlpha3).toBe("AUS");
+  });
 });

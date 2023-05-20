@@ -1,5 +1,5 @@
 import { sqliteTable, integer, text, index } from "drizzle-orm/sqlite-core";
-import { InferModel } from "drizzle-orm";
+import { InferModel, relations } from "drizzle-orm";
 import { dateTime, dateTimeDefaultSQL } from "./customTypes";
 
 export const addressTable = sqliteTable("Address", {
@@ -37,3 +37,10 @@ export const customerTable = sqliteTable(
 );
 export type CustomerInsertType = InferModel<typeof customerTable, "insert">;
 export type CustomerSelectType = InferModel<typeof customerTable, "select">;
+
+export const customerRelations = relations(customerTable, ({ one }) => ({
+  address: one(addressTable, {
+    fields: [customerTable.addressId],
+    references: [addressTable.id],
+  }),
+}));
