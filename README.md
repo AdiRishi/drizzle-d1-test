@@ -13,7 +13,7 @@ Now you can either interact with the app via in two ways
 1. Local dev server (via `yarn dev`)
 2. Vitest testing (via `yarn test`)
 
-Either way, visiting the `/` route will demonstrate the error at hand.
+Either way, visiting the `/join-test` route will demonstrate the error at hand.
 
 **Tldr on the bug**
 In this example we have two tables - `Customer` and `Address`.

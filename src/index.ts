@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import { customerTable } from "./schema";
@@ -42,7 +42,9 @@ async function populateDB(db: DrizzleD1Database) {
 
 export const app = new Hono<{ Bindings: Env }>();
 
-app.get("/", async (c) => {
+app.get("/", (c) => c.text("Visit one of the following endpoints - /join-test"));
+
+app.get("/join-test", async (c) => {
   const db = getDrizzleClient(c.env);
   await populateDB(db);
 
